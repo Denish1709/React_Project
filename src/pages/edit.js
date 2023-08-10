@@ -11,7 +11,7 @@ export default function EditItems() {
   // this will be called once when the page is loaded
   useEffect(() => {
     // 1. load all the posts from the local storage
-    const lists = JSON.parse(localStorage.getItem("lists"));
+    const lists = JSON.parse(localStorage.getItem("shoppingList"));
     // 2. find the single post with the provided id inside the posts array
     const list = lists
       ? lists.find((p) => parseInt(p.id) === parseInt(id))
@@ -26,9 +26,9 @@ export default function EditItems() {
 
   const updateList = () => {
     // 1. load the posts from local storage
-    const lists = JSON.parse(localStorage.getItem("lists"));
+    const lists = JSON.parse(localStorage.getItem("shoppingList"));
     // 2. use .map to modify the array
-    const newLists = lists.map((p) => {
+    const newList = lists.map((p) => {
       if (parseInt(p.id) === parseInt(id)) {
         p.item = item;
         p.category = category;
@@ -37,7 +37,7 @@ export default function EditItems() {
       return p;
     });
     // 3. save the newPosts into the local storage
-    localStorage.setItem("lists", JSON.stringify(newLists));
+    localStorage.setItem("shoppingList", JSON.stringify(newList));
     // 4. redirect back to /manage-posts
     navigate("/shoppinglist");
   };
@@ -110,8 +110,8 @@ export default function EditItems() {
         </form>
       </div>
       <div className="text-center">
-        <Link to="/shoppinglist" className="btn btn-link btn-sm">
-          <i className="bi bi-arrow-left"></i> Back to Posts
+        <Link to="/" className="btn btn-link btn-sm">
+          <i className="bi bi-arrow-left"></i> Back to Home
         </Link>
       </div>
     </div>

@@ -7,7 +7,7 @@ import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import { BsTrash } from "react-icons/bs";
-import { AiOutlineUnorderedList, AiFillEdit } from "react-icons/ai";
+import { AiOutlineUnorderedList, AiOutlineEdit } from "react-icons/ai";
 import Modal from "react-bootstrap/Modal";
 
 // edit button
@@ -39,27 +39,6 @@ export default function ShoppingLists() {
   const filteredList = useMemo(() => {
     return list.filter((i) => (filter === "" ? true : i.category === filter));
   }, [filter, list]);
-
-  const addShoppingList = () => {
-    const newList = [...list];
-
-    if (item && quantity) {
-      newList.push({
-        id: nanoid(),
-        item: item,
-        quantity: quantity,
-        category: category,
-      });
-
-      setList(newList);
-      localStorage.setItem("shoppingList", JSON.stringify(newList));
-
-      setItem("");
-      setQuantity(0);
-    } else {
-      alert("Please add your Shopping List");
-    }
-  };
 
   const deleteShoppingList = (id) => {
     const newList = list.filter((i) => i.id !== id);
@@ -113,6 +92,23 @@ export default function ShoppingLists() {
               <AiOutlineUnorderedList /> Shopping List
             </h2>
           </Card.Title>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <>
+              <Button
+                variant="primary"
+                size="sm"
+                className="me-2 mb-4"
+                onClick={() => setModalShow(true)}
+              >
+                Add New Item
+              </Button>
+
+              <MyVerticallyCenteredModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+              />
+            </>
+          </div>
           <Form.Select
             className="mb-4"
             value={filter}
@@ -227,14 +223,16 @@ export default function ShoppingLists() {
                           </Link> */}
 
                           <>
-                            <Button
-                              variant="secondary"
+                            <Link
+                              to={`/edit/${i.id}`}
+                              className="me-2 fs-5 text-secondary"
+                              variant=""
                               size="sm"
-                              className="me-2"
-                              onClick={() => setModalShow(true)}
                             >
-                              <AiFillEdit />
-                            </Button>
+                              <Button variant="secondary" size="sm">
+                                <AiOutlineEdit />
+                              </Button>
+                            </Link>
 
                             <MyVerticallyCenteredModal
                               show={modalShow}
@@ -271,53 +269,6 @@ export default function ShoppingLists() {
               )}
             </tbody>
           </Table>
-          <Form>
-            <Form.Group className="mb-1 mt-2">
-              <Form.Control
-                type="text"
-                placeholder="Add your items here..."
-                value={item}
-                onChange={(event) => setItem(event.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-1">
-              <Form.Control
-                type="text"
-                placeholder="Add your quantity here..."
-                value={quantity}
-                // min={0}
-                onChange={(event) => setQuantity(event.target.value)}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Select
-                value={category}
-                onChange={(event) => {
-                  setCategory(event.target.value);
-                }}
-              >
-                <option>Select a category</option>
-                <option value="">All category</option>
-                <option value="vegetables">Vegetables</option>
-                <option value="wet Item">Wet Items</option>
-                <option value="drinks">Drinks</option>
-                <option value="bread">Bread</option>
-                <option value="fruits">Fruits</option>
-                <option value="household">Household Supplies</option>
-                <option value="others">Others</option>
-              </Form.Select>
-            </Form.Group>
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={(event) => {
-                event.preventDefault();
-                addShoppingList();
-              }}
-            >
-              Add New Item
-            </Button>
-          </Form>
         </Card.Body>
       </Card>
       <div className="mt-5 text-center">
@@ -331,40 +282,39 @@ export default function ShoppingLists() {
 
 export function MyVerticallyCenteredModal(props) {
   const navigate = useNavigate();
-  const { id } = useParams();
   const [item, setItem] = useState("");
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [list, setList] = useState([]);
 
   useEffect(() => {
-    // 1. load all the posts from the local storage
-    const lists = JSON.parse(localStorage.getItem("lists"));
-    // 2. find the single post with the provided id inside the posts array
-    const list = lists ? lists.find((p) => p.id === id) : null;
-
-    if (list) {
-      setItem(list.item);
-      setCategory(list.category);
-      setQuantity(list.quantity);
+    const shoppingList = JSON.parse(localStorage.getItem("shoppingList"));
+    if (shoppingList) {
+      setList(shoppingList);
     }
-  }, []); // empty array so that only trigger once when page is loaded
+  }, []);
 
-  const updateList = () => {
-    // 1. load the posts from local storage
-    const lists = JSON.parse(localStorage.getItem("lists"));
-    // 2. use .map to modify the array
-    const newLists = lists.map((p) => {
-      if (p.id === id) {
-        p.item = item;
-        p.category = category;
-        p.quantity = quantity;
-      }
-      return p;
-    });
-    // 3. save the newPosts into the local storage
-    localStorage.setItem("lists", JSON.stringify(newLists));
-    // 4. redirect back to /manage-posts
-    navigate("/shoppinglist");
+  const addShoppingList = () => {
+    const newList = [...list];
+
+    if (item && quantity) {
+      newList.push({
+        id: Math.floor(Math.random() * 100000),
+        item: item,
+        quantity: quantity,
+        category: category,
+      });
+
+      setList(newList);
+      localStorage.setItem("shoppingList", JSON.stringify(newList));
+
+      setItem("");
+      setQuantity(0);
+    } else {
+      alert("Please add your Shopping List");
+    }
+
+    // navigate("/shoppinglist");
   };
 
   return (
@@ -384,7 +334,7 @@ export function MyVerticallyCenteredModal(props) {
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            updateList();
+            addShoppingList();
           }}
         >
           <div className="mb-3">
@@ -435,20 +385,18 @@ export function MyVerticallyCenteredModal(props) {
               onChange={(event) => setQuantity(event.target.value)}
             />
           </div>
-          {/* <div className="text-end">
-            <button type="submit" className="btn btn-primary">
-              Update
-            </button>
-          </div> */}
+          <div className="text-end">
+            <Button type="submit" className="btn btn-primary">
+              Add
+            </Button>
+          </div>
         </form>
       </Modal.Body>
       <Modal.Footer>
-        {/* <Button onClick={props.onHide}>Close</Button> */}
-        <div className="text-end">
-          <button type="submit" className="btn btn-primary">
-            Update
-          </button>
-        </div>
+        <Button onClick={props.onHide}>Close</Button>
+        <Link to="/shoppinglist" className="btn btn-lsecondary btn-sm">
+          <i className="bi bi-arrow-left"></i> Back to Home
+        </Link>
       </Modal.Footer>
     </Modal>
   );
