@@ -7,7 +7,7 @@ import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import { BsTrash } from "react-icons/bs";
-import { AiOutlineUnorderedList } from "react-icons/ai";
+import { AiOutlineUnorderedList, AiFillEdit } from "react-icons/ai";
 import Modal from "react-bootstrap/Modal";
 
 // edit button
@@ -120,14 +120,14 @@ export default function ShoppingLists() {
               setFilter(event.target.value);
             }}
           >
-            <option value="">All Category</option>
-            <option value="Vegetables">Vegetables</option>
-            <option value="Wet-Item">Wet Items</option>
-            <option value="Drinks">Drinks</option>
-            <option value="Bread">Bread</option>
-            <option value="Fruits">Fruits</option>
-            <option value="Household">Household Supplies</option>
-            <option value="Others">Others</option>
+            <option value="">All category</option>
+            <option value="vegetables">Vegetables</option>
+            <option value="wet Item">Wet Items</option>
+            <option value="drinks">Drinks</option>
+            <option value="bread">Bread</option>
+            <option value="fruits">Fruits</option>
+            <option value="household">Household Supplies</option>
+            <option value="others">Others</option>
           </Form.Select>
           <Table striped bordered hover>
             <thead>
@@ -212,7 +212,7 @@ export default function ShoppingLists() {
                             <i className="bi bi-pencil"></i>
                           </Link> */}
 
-                          <Link
+                          {/* <Link
                             // to={`/test/${i.id}`}
                             className="btn btn-secondary btn-sm me-2"
                             variant="primary"
@@ -224,11 +224,28 @@ export default function ShoppingLists() {
                               onHide={() => setModalShow(false)}
                             />
                             <i className="bi bi-pencil"></i>
-                          </Link>
+                          </Link> */}
+
+                          <>
+                            <Button
+                              variant="secondary"
+                              size="sm"
+                              className="me-2"
+                              onClick={() => setModalShow(true)}
+                            >
+                              <AiFillEdit />
+                            </Button>
+
+                            <MyVerticallyCenteredModal
+                              show={modalShow}
+                              onHide={() => setModalShow(false)}
+                            />
+                          </>
 
                           <Button
                             variant="danger"
                             size="sm"
+                            className="me-2"
                             onClick={(event) => {
                               event.preventDefault();
                               deleteShoppingList(i.id);
@@ -243,7 +260,13 @@ export default function ShoppingLists() {
                 })
               ) : (
                 <tr>
-                  <td colSpan={5}>No Items added yet.</td>
+                  <td colSpan={5} className="text-center">
+                    <img src="https://i0.wp.com/www.huratips.com/wp-content/uploads/2019/04/empty-cart.png?fit=603%2C288&ssl=1" />
+                    <h1 className="text-center pe-5 text-secondary">
+                      NO ITEM ADDED YET
+                    </h1>
+                  </td>
+                  {/* <td colSpan={5}>No Items added yet.</td> */}
                 </tr>
               )}
             </tbody>
@@ -276,7 +299,7 @@ export default function ShoppingLists() {
                 <option>Select a category</option>
                 <option value="">All category</option>
                 <option value="vegetables">Vegetables</option>
-                <option value="wetItem">Wet Items</option>
+                <option value="wet Item">Wet Items</option>
                 <option value="drinks">Drinks</option>
                 <option value="bread">Bread</option>
                 <option value="fruits">Fruits</option>
@@ -317,9 +340,7 @@ export function MyVerticallyCenteredModal(props) {
     // 1. load all the posts from the local storage
     const lists = JSON.parse(localStorage.getItem("lists"));
     // 2. find the single post with the provided id inside the posts array
-    const list = lists
-      ? lists.find((p) => parseInt(p.id) === parseInt(id))
-      : null;
+    const list = lists ? lists.find((p) => p.id === id) : null;
 
     if (list) {
       setItem(list.item);
@@ -333,7 +354,7 @@ export function MyVerticallyCenteredModal(props) {
     const lists = JSON.parse(localStorage.getItem("lists"));
     // 2. use .map to modify the array
     const newLists = lists.map((p) => {
-      if (parseInt(p.id) === parseInt(id)) {
+      if (p.id === id) {
         p.item = item;
         p.category = category;
         p.quantity = quantity;
@@ -414,18 +435,20 @@ export function MyVerticallyCenteredModal(props) {
               onChange={(event) => setQuantity(event.target.value)}
             />
           </div>
-          <div className="text-end">
+          {/* <div className="text-end">
             <button type="submit" className="btn btn-primary">
               Update
             </button>
-          </div>
+          </div> */}
         </form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
-        <Link to="/shoppinglist" className="btn btn-lsecondary btn-sm">
-          <i className="bi bi-arrow-left"></i> Back to Home
-        </Link>
+        {/* <Button onClick={props.onHide}>Close</Button> */}
+        <div className="text-end">
+          <button type="submit" className="btn btn-primary">
+            Update
+          </button>
+        </div>
       </Modal.Footer>
     </Modal>
   );
