@@ -1,27 +1,18 @@
 import "./shopping.css";
 import { useState, useEffect, useMemo } from "react";
-import { nanoid } from "nanoid";
-// import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import { BsTrash } from "react-icons/bs";
+import { HiArrowNarrowLeft } from "react-icons/hi";
 import { AiOutlineUnorderedList, AiOutlineEdit } from "react-icons/ai";
 import Modal from "react-bootstrap/Modal";
-
-// edit button
-// import Button from "react-bootstrap/Button";
-// import Modal from "react-bootstrap/Modal";
-// import { useState, useEffect } from "react";
 import React from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // edit button
 
 export default function ShoppingLists() {
-  const [item, setItem] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [category, setCategory] = useState("");
   const [filter, setFilter] = useState("");
   const [list, setList] = useState([]);
   const [checkedList, setCheckedList] = useState([]);
@@ -117,13 +108,14 @@ export default function ShoppingLists() {
             }}
           >
             <option value="">All category</option>
-            <option value="vegetables">Vegetables</option>
-            <option value="wet Item">Wet Items</option>
-            <option value="drinks">Drinks</option>
-            <option value="bread">Bread</option>
-            <option value="fruits">Fruits</option>
-            <option value="household">Household Supplies</option>
-            <option value="others">Others</option>
+            <option value="Vegetables">Vegetables</option>
+            <option value="Fruits">Fruits</option>
+            <option value="Can-Food">Can Foods</option>
+            <option value="Wet-Items">Wet Items</option>
+            <option value="Dry-Items">Dry Items</option>
+            <option value="Snacks">Snacks</option>
+            <option value="Household">Household Supplies</option>
+            <option value="Others">Others</option>
           </Form.Select>
           <Table striped bordered hover>
             <thead>
@@ -201,34 +193,8 @@ export default function ShoppingLists() {
                       </td>
                       <td>
                         <div className="text-center">
-                          {/* <Link
-                            to={`/edit/${i.id}`}
-                            className="btn btn-secondary btn-sm me-2"
-                          >
-                            <i className="bi bi-pencil"></i>
-                          </Link> */}
-
-                          {/* <Link
-                            // to={`/test/${i.id}`}
-                            className="btn btn-secondary btn-sm me-2"
-                            variant="primary"
-                            onClick={() => setModalShow(true)}
-                            // value={`${i.id}`}
-                          >
-                            <MyVerticallyCenteredModal
-                              show={modalShow}
-                              onHide={() => setModalShow(false)}
-                            />
-                            <i className="bi bi-pencil"></i>
-                          </Link> */}
-
                           <>
-                            <Link
-                              to={`/edit/${i.id}`}
-                              className="me-2 fs-5 text-secondary"
-                              variant=""
-                              size="sm"
-                            >
+                            <Link to={`/edit/${i.id}`} className="me-2 fs-5">
                               <Button variant="secondary" size="sm">
                                 <AiOutlineEdit />
                               </Button>
@@ -264,7 +230,6 @@ export default function ShoppingLists() {
                       NO ITEM ADDED YET
                     </h1>
                   </td>
-                  {/* <td colSpan={5}>No Items added yet.</td> */}
                 </tr>
               )}
             </tbody>
@@ -272,8 +237,11 @@ export default function ShoppingLists() {
         </Card.Body>
       </Card>
       <div className="mt-5 text-center">
-        <Link to="/" className="pt-2 text-center btn btn-secondary btn-sm">
-          Back To Home
+        <Link to="/">
+          <Button variant="primary" size="sm">
+            <HiArrowNarrowLeft />
+            Back to Home
+          </Button>
         </Link>
       </div>
     </div>
@@ -309,12 +277,10 @@ export function MyVerticallyCenteredModal(props) {
       localStorage.setItem("shoppingList", JSON.stringify(newList));
 
       setItem("");
-      setQuantity(0);
+      setQuantity("");
     } else {
       alert("Please add your Shopping List");
     }
-
-    // navigate("/shoppinglist");
   };
 
   return (
@@ -394,8 +360,11 @@ export function MyVerticallyCenteredModal(props) {
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>
-        <Link to="/shoppinglist" className="btn btn-lsecondary btn-sm">
-          <i className="bi bi-arrow-left"></i> Back to Home
+        <Link to="/">
+          <Button variant="secondary" size="sm">
+            <HiArrowNarrowLeft />
+            Back
+          </Button>
         </Link>
       </Modal.Footer>
     </Modal>

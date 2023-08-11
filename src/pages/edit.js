@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import { HiArrowNarrowLeft } from "react-icons/hi";
+import Button from "react-bootstrap/Button";
 
 export default function EditItems() {
   const navigate = useNavigate();
@@ -39,7 +41,7 @@ export default function EditItems() {
     // 3. save the newPosts into the local storage
     localStorage.setItem("shoppingList", JSON.stringify(newList));
     // 4. redirect back to /manage-posts
-    navigate("/shoppinglist");
+    navigate("/");
   };
 
   return (
@@ -78,8 +80,8 @@ export default function EditItems() {
                 setCategory(event.target.value);
               }}
             >
-              <option value="">Select a Category</option>
-              <option value="">All Category</option>
+              {/* <option value="">Select a Category</option> */}
+              {/* <option value="">All Category</option> */}
               <option value="Vegetables">Vegetables</option>
               <option value="Fruits">Fruits</option>
               <option value="Can-Food">Can Foods</option>
@@ -110,8 +112,11 @@ export default function EditItems() {
         </form>
       </div>
       <div className="text-center">
-        <Link to="/" className="btn btn-link btn-sm">
-          <i className="bi bi-arrow-left"></i> Back to Home
+        <Link to="/">
+          <Button variant="primary" size="md">
+            <HiArrowNarrowLeft />
+            Back To Home
+          </Button>
         </Link>
       </div>
     </div>

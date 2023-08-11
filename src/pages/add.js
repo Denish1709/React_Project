@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { nanoid } from "nanoid";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
@@ -25,7 +24,7 @@ export default function AddItems() {
 
     if (item && quantity) {
       newList.push({
-        id: nanoid(),
+        id: Math.floor(Math.random() * 100000),
         item: item,
         quantity: quantity,
         category: category,
@@ -40,7 +39,7 @@ export default function AddItems() {
       alert("Please add your Shopping List");
     }
 
-    navigate("/shoppinglist");
+    navigate("/");
   };
 
   return (
@@ -78,15 +77,16 @@ export default function AddItems() {
                   setCategory(event.target.value);
                 }}
               >
-                <option>Select a category</option>
+                <option value="">Select a Category</option>
                 <option value="">All Category</option>
-                <option value="vegetables">Vegetables</option>
-                <option value="wetItem">Wet Items</option>
-                <option value="drinks">Drinks</option>
-                <option value="bread">Bread</option>
-                <option value="fruits">Fruits</option>
-                <option value="household">Household Supplies</option>
-                <option value="others">Others</option>
+                <option value="Vegetables">Vegetables</option>
+                <option value="Fruits">Fruits</option>
+                <option value="Can-Food">Can Foods</option>
+                <option value="Wet-Items">Wet Items</option>
+                <option value="Dry-Items">Dry Items</option>
+                <option value="Snacks">Snacks</option>
+                <option value="Household">Household Supplies</option>
+                <option value="Others">Others</option>
               </Form.Select>
             </Form.Group>
             <Button
